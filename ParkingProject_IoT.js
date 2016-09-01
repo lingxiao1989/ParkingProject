@@ -65,7 +65,7 @@ function processTest( arguments ) {
 		thingShadows.unregister( 'raspberry_pi' );
 	});
 	thingShadows.on('reconnect', function() {
-    console.log('reconnect');
+    		console.log('reconnect');
 		thingShadows.register( 'raspberry_pi', { ignoreDeltas: true, persistentSubscribe: true } ); 
 	});
 	thingShadows.on('offline', function() {
@@ -79,23 +79,23 @@ function processTest( arguments ) {
 	});
 	
 	thingShadows.on('status',  function(thingName, stat, clientToken, stateObject) {
-       console.log('received '+stat+' on '+thingName+': '+
-                   JSON.stringify(stateObject));
-    });
+       		console.log('received '+stat+' on '+thingName+': '+
+                JSON.stringify(stateObject));
+    	});
 
 	thingShadows.on('update',  function(thingName, stateObject) {
-         console.log('received update '+' on '+thingName+': '+
-                     JSON.stringify(stateObject));
-    });
+		console.log('received update '+' on '+thingName+': '+
+		JSON.stringify(stateObject));
+    	});
 
 	thingShadows.on('delta',   function(thingName, stateObject) {
-         console.log('received delta '+' on '+thingName+': '+
-                     JSON.stringify(stateObject));
-    });
+         	console.log('received delta '+' on '+thingName+': '+
+		JSON.stringify(stateObject));
+    	});
 
 	thingShadows.on('timeout',  function(thingName, clientToken) {
-         console.log('received timeout for '+ clientToken)
-    });
+		console.log('received timeout for '+ clientToken)
+    	});
 }
 
 
