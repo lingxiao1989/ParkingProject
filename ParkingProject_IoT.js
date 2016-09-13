@@ -39,28 +39,33 @@ function processTest( arguments ) {
 		thingShadows.register( 'raspberry_pi', { ignoreDeltas: true, persistentSubscribe: true } );
 	});
 	
-	setTimeout(function(){
-	PythonShell.run('TopologyTraining.py',options, function(err,result){
-		if (err) throw err;
-	
-		if(Object.keys(result).length > 0){
-		
-			console.log('results: %j', result);
-			
-			mythingstate = {
-			"state": {
-				"reported": {
-					"carsDetected" : result
-							}
-					}
-			};
-			thingShadows.update('raspberry_pi',  mythingstate);
-			thingShadows.publish('topic/carDetection', 'Someone is using your parking lot!');
-		}
-	return
-	})}, 1000);
-	
-
+	var loop = setInterval(function(){
+		if (looptime===0){clearInterval(loop);}
+		else{
+		console.log('Starting new loop');
+		looptime--;
+		PythonShell.run('TopologyTraining.py',options, function(err,result){
+			if (err) throw err;
+			//camera.start();
+			//setTimeout(function(){
+				//camera.stop();
+			//}, 10000);
+			//if(Object.keys(result).length > 0){
+			if(result!==null){
+				console.log('results: %j', result);
+				
+				mythingstate = {
+				"state": {
+					"reported": {
+						"carsDetected" : result
+								}
+						}
+				};
+				thingShadows.update('raspberry_pi',  mythingstate);
+				thingShadows.publish('topic/carDetection', 'Someone is using your parking lot!');
+			}
+		})}
+	}, 10000);
 	
 	thingShadows.on('close', function() {
 		console.log('close');
@@ -98,7 +103,7 @@ function processTest( arguments ) {
 	thingShadows.on('timeout',  function(thingName, clientToken) {
 		console.log('received timeout for '+ clientToken)
     	});
-    	return
+    	return;
 }
 
 
@@ -109,11 +114,7 @@ function processTest( arguments ) {
 
 
 if (require.main === module) {
-
-    processTest({Mode : 1});
-
+	processTest({Mode : 1, Circle : 5});
   /*cmdLineProcess('connect to the AWS IoT service and demonstrate thing shadow APIs, test modes 1-2',
-
                  process.argv.slice(2), processTest );*/
-
 }
