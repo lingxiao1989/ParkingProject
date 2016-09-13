@@ -46,11 +46,7 @@ function processTest( arguments ) {
 		looptime--;
 		PythonShell.run('TopologyTraining.py',options, function(err,result){
 			if (err) throw err;
-			//camera.start();
-			//setTimeout(function(){
-				//camera.stop();
-			//}, 10000);
-			//if(Object.keys(result).length > 0){
+
 			if(result!==null){
 				console.log('results: %j', result);
 				
