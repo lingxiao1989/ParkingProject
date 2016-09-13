@@ -16,7 +16,7 @@ function processTest( arguments ) {
 
 	if (arguments.Mode===1){
 		var options={
-			args: ['--train','/home/pi/Workspace/ParkMe/HaarCarsXML/parking-car.png']
+			args: ['--train']
 		};
 	}
 	else{
@@ -39,6 +39,7 @@ function processTest( arguments ) {
 		thingShadows.register( 'raspberry_pi', { ignoreDeltas: true, persistentSubscribe: true } );
 	});
 	
+	setTimeout(function(){
 	PythonShell.run('TopologyTraining.py',options, function(err,result){
 		if (err) throw err;
 	
@@ -56,7 +57,8 @@ function processTest( arguments ) {
 			thingShadows.update('raspberry_pi',  mythingstate);
 			thingShadows.publish('topic/carDetection', 'Someone is using your parking lot!');
 		}
-	});
+	return
+	})}, 1000);
 	
 
 	
@@ -96,6 +98,7 @@ function processTest( arguments ) {
 	thingShadows.on('timeout',  function(thingName, clientToken) {
 		console.log('received timeout for '+ clientToken)
     	});
+    	return
 }
 
 
